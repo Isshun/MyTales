@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items>
+    <item id="4b2b8290-6571-11e4-9803-0800200c9a66" name="Barrel" file="container.png" x="0" y="0" width="1" height="1" />
+    <item id="4b2b8290-6571-11e4-9803-0800200c9a67" name="Bag" file="container.png" x="0" y="1" width="1" height="1" />
+    <item id="4b2b8290-6571-11e4-9803-0800200c9a68" name="Pot" file="container.png" x="0" y="2" width="1" height="1" />
+</items>
+    

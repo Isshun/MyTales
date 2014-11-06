@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\box2dlights-1.2-5968b1f55b07899753f14ac3d8382c2091cdfcf3.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.box2dlights\box2dlights\1.2\8b3baf8bd6d5fdf7052d9798977133f46a9e7a05\box2dlights-1.2.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="8b3baf8bd6d5fdf7052d9798977133f46a9e7a05"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-controllers-1.4.1-cc348aebfd56619d4d58707f3b47ce18db76c557.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-controllers\1.4.1\70b356b52bac1cb0fd19b530e0e1ddac5776ab21\gdx-controllers-1.4.1.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="70b356b52bac1cb0fd19b530e0e1ddac5776ab21"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-ai-1.4.0-ce2e384b10bf90fd9384b312644983db4ada5a76.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-ai\1.4.0\f7532801d6c1526df4a609341fa145acb9e8eb3a\gdx-ai-1.4.0.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="f7532801d6c1526df4a609341fa145acb9e8eb3a"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.4.1-6fc892d26478bfca2240622f03aa70df2bd0425b.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.4.1\eca2621f18b162c03992bd3ecc226e8a477dc6f9\gdx-backend-android-1.4.1.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="eca2621f18b162c03992bd3ecc226e8a477dc6f9"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\core-1.0-278c062672cb271b2df8ca519d59215e3f6145fe.jar"
+        jar="C:\Users\Alex\Projects\mytales\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="82ce2d535b472ba345422dbdadf1142a373cff43"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.4.1-031448bbb94388dc790816f048bf7e7bacfc454d.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.4.1\9e6453d244896698694a7f3059f15ae509044101\gdx-box2d-1.4.1.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="9e6453d244896698694a7f3059f15ae509044101"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-controllers-android-1.4.1-3ad3d635e9c94c7395519699f742749f09a24afa.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-controllers-android\1.4.1\5f8ec5c6c39339d2be0eb72a1ee15e8582a0b5b5\gdx-controllers-android-1.4.1.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="5f8ec5c6c39339d2be0eb72a1ee15e8582a0b5b5"/>
+    <item
+        dex="C:\Users\Alex\Projects\mytales\android\build\intermediates\pre-dexed\debug\gdx-1.4.1-fd1a58f14bc83ce7f5b8d31ae5c429202f96c5df.jar"
+        jar="C:\Users\Alex\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.4.1\df470d263438048af74860ca51fc497c16a0c76a\gdx-1.4.1.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="df470d263438048af74860ca51fc497c16a0c76a"/>
+
+</pre-dex-items>
