@@ -1,6 +1,5 @@
-package org.smallbox.tales.screen;
+package org.smallbox.tales.screen.ui;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.model.ItemModel;
@@ -30,7 +29,7 @@ public class UIImage extends UITouchModel {
     @Override
     protected void onDraw(SpriteBatch batch) {
         if (_item != null) {
-            _item.draw(batch, _x, Settings.SCREEN_HEIGHT - _height - _y);
+            _item.drawIcon(batch, _x, Settings.SCREEN_HEIGHT - _height - _y);
         } else if (_texture != null) {
             batch.draw(_texture.getTexture(), _x, Settings.SCREEN_HEIGHT - _height - _y);
         }

@@ -4,10 +4,9 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.controllers.ControllerListener;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
-import org.smallbox.tales.model.GroundModel;
-import org.smallbox.tales.model.ItemModel;
-import org.smallbox.tales.model.MapModel;
-import org.smallbox.tales.model.factory.MapFactory;
+import org.smallbox.tales.screen.ui.OnKeyListener;
+import org.smallbox.tales.screen.ui.OnTouchListener;
+import org.smallbox.tales.screen.ui.UITouchModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +16,14 @@ import java.util.List;
  */
 public abstract class BaseScreen implements Screen {
     protected InputProcessor  _inputAdapter;
-    private boolean _hasBeenCreated = false;
 
     private List<UITouchModel> _uiItems;
 
     private OnKeyListener _onKeyListener;
     private OnTouchListener _onTouchListener;
+    private boolean _hasBeenCreated;
 
-    public BaseScreen() {
+    protected BaseScreen() {
         _uiItems = new ArrayList<UITouchModel>();
 
         _inputAdapter = new InputProcessor() {
@@ -53,7 +52,7 @@ public abstract class BaseScreen implements Screen {
             public boolean touchDown (int x, int y, int pointer, int button) {
                 for (UITouchModel item: _uiItems) {
                     if (item.hasTouchListener() && item.isTouched(x, y)) {
-                        item.getTouchListener().onTouchDown(x - item.getX(), y - item.getY(), pointer, button);
+                        item.getTouchListener().onTouchDown(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()), pointer, button);
                         return true;
                     }
                 }
@@ -70,11 +69,11 @@ public abstract class BaseScreen implements Screen {
 
                 for (UITouchModel item: _uiItems) {
                     if ((item.hasClickListener() || item.hasTouchListener()) && item.isTouched(x, y)) {
-                        if (item.hasClickListener() && item.isTouched(x, y)) {
-                            item.getClickListener().onClick(x - item.getX(), y - item.getY());
+                        if (item.hasClickListener()) {
+                            item.getClickListener().onClick(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()));
                         }
-                        if (item.hasTouchListener() && item.isTouched(x, y)) {
-                            item.getTouchListener().onTouchUp(x - item.getX(), y - item.getY(), pointer, button);
+                        if (item.hasTouchListener()) {
+                            item.getTouchListener().onTouchUp(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()), pointer, button);
                         }
                         return true;
                     }
@@ -124,6 +123,9 @@ public abstract class BaseScreen implements Screen {
     }
 
     protected void addUIItem(UITouchModel item) {
+        if (item == null) {
+            throw new RuntimeException("Cannot add null item to UI Items");
+        }
         _uiItems.add(item);
     }
 
@@ -137,14 +139,12 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (!_hasBeenCreated) {
-            onCreate();
-            _hasBeenCreated = true;
-        }
-        onRefresh();
+        if (_hasBeenCreated) {
+            onRefresh();
 
-        for (UITouchModel item: _uiItems) {
-            item.draw(Game.batch);
+            for (UITouchModel item: _uiItems) {
+                item.draw(Game.batch);
+            }
         }
     }
 
@@ -187,5 +187,10 @@ public abstract class BaseScreen implements Screen {
 
     public InputProcessor getInputAdapter() {
         return _inputAdapter;
+    }
+
+    public void create() {
+        onCreate();
+        _hasBeenCreated = true;
     }
 }

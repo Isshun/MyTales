@@ -16,14 +16,14 @@ import org.smallbox.tales.model.PlayableCharacterModel;
 /**
  * Created by Alex on 02/11/2014.
  */
-public class BattleScreen implements Screen {
+public class GameBattleScreen implements Screen {
     private BattleModel _battle;
 
     private Texture _btA, _btB, _btC, _btD;
     private ControllerListener _controllerListener;
     private PlayableCharacterModel _player;
 
-    public BattleScreen() {
+    public GameBattleScreen() {
         _battle = BattleModel.newInstance();
         _btA = new Texture("resources/bt_a.png");
         _btB = new Texture("resources/bt_a.png");

@@ -1,6 +1,7 @@
 package org.smallbox.tales.model;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.tales.Game;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ public class MapModel {
     private MapObjectModel[][][] _areas;
     private String _name;
     private String _id;
+    private String _music;
 
     public MapModel() {
         _id = UUID.randomUUID().toString();
@@ -65,5 +67,17 @@ public class MapModel {
 
     public MapObjectModel getObject(int z, int x, int y) {
         return _areas[z][x][y];
+    }
+
+    public String getMusic() {
+        return _music;
+    }
+
+    public void setMusic(String music) {
+        _music = music;
+    }
+
+    public void setItem(int z, int x, int y, String id) {
+        setItem(z, x, y, Game.getInstance().getItem(id));
     }
 }

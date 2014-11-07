@@ -47,8 +47,21 @@ public class ItemModel extends MapObjectModel {
     @Override
     public void onDraw(SpriteBatch batch, int x, int y) {
         TextureModel texture = getTexture();
-
         batch.draw(texture.getTexture(), x, y, _x * Settings.TILE_SIZE, _y * Settings.TILE_SIZE, _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE);
+    }
+
+    public void drawIcon(SpriteBatch batch, int x, int y) {
+        TextureModel texture = getTexture();
+        float scale = 1f / Math.max(_width, _height);
+        batch.draw(texture.getTexture(),
+                (float)x, (float)y, // Position
+                0f, 0f, // Origins
+                (float)(_width * Settings.TILE_SIZE), (float)(_height * Settings.TILE_SIZE),  // Size
+                scale, scale, // Scale
+                0f, // Rotation
+                _x * Settings.TILE_SIZE, _y * Settings.TILE_SIZE, // Source
+                _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE,  //Source size
+                false, false); // Flip
     }
 
     public String getName() {
@@ -62,4 +75,5 @@ public class ItemModel extends MapObjectModel {
     public String getId() {
         return _id;
     }
+
 }

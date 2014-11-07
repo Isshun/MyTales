@@ -1,10 +1,6 @@
-package org.smallbox.tales.screen;
+package org.smallbox.tales.screen.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.smallbox.tales.Settings;
-import org.smallbox.tales.model.ItemModel;
-import org.w3c.dom.html.HTMLInputElement;
-import sun.font.TextLabel;
 
 /**
  * Created by Alex on 06/11/2014.
@@ -31,7 +27,7 @@ public abstract class UITouchModel {
     protected abstract void onDraw(SpriteBatch batch);
 
     public boolean isTouched(int x, int y) {
-        return (x >= _x && _x <= _x + _width && y >= _y && y <= _y + _height);
+        return (x >= _x && x <= _x + _width && y >= _y && y <= _y + _height);
     }
 
     public boolean hasClickListener() {

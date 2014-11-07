@@ -1,5 +1,6 @@
 package org.smallbox.tales.model.factory;
 
+import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.model.AreaModel;
 import org.smallbox.tales.model.GroundModel;
@@ -23,7 +24,7 @@ import java.io.File;
 public class MapFactory {
     public static MapModel fromJSON(String name) {
         try {
-            File fXmlFile = new File("maps", name + ".xml");
+            File fXmlFile = new File("maps", name.endsWith(".xml") ? name : name + ".xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
@@ -37,6 +38,10 @@ public class MapFactory {
             //Element mapElement = (Element)doc.getElementsByTagName("map");
 
             MapModel map = new MapModel(doc.getDocumentElement().getAttribute("id"));
+
+            if (!doc.getDocumentElement().getAttribute("music").isEmpty()) {
+                map.setMusic(doc.getDocumentElement().getAttribute("music"));
+            }
 
             map.setName(doc.getDocumentElement().getAttribute("name"));
 
@@ -64,9 +69,7 @@ public class MapFactory {
 
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element eElement = (Element) nNode;
-                        ItemModel item = new ItemModel(eElement.getAttribute("id"), eElement.getAttribute("name"), "container.png",
-                                Integer.parseInt(eElement.getAttribute("x")), Integer.parseInt(eElement.getAttribute("y")),
-                                Settings.TILE_SIZE, Settings.TILE_SIZE);
+                        ItemModel item = Game.getInstance().getItem(eElement.getAttribute("id"));
                         map.addItem(Integer.parseInt(eElement.getAttribute("z")), Integer.parseInt(eElement.getAttribute("x")), Integer.parseInt(eElement.getAttribute("y")), item);
                     }
                 }
@@ -92,6 +95,7 @@ public class MapFactory {
 
             addAttr(doc, rootElement, "name", map.getName());
             addAttr(doc, rootElement, "id", map.getId());
+            addAttr(doc, rootElement, "music", map.getMusic());
 
             addAreas(doc, rootElement, map);
             addItems(doc, rootElement, map);

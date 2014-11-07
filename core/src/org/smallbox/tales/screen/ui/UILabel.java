@@ -1,4 +1,4 @@
-package org.smallbox.tales.screen;
+package org.smallbox.tales.screen.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.tales.Game;
@@ -8,11 +8,11 @@ import org.smallbox.tales.Settings;
  * Created by Alex on 06/11/2014.
  */
 public class UILabel extends UITouchModel {
-    private final String _text;
+    private String _text;
     private int _color;
 
     public UILabel(String text, int x, int y) {
-        super(x, y, 100, 20);
+        super(x, y, 80, 20);
         _text = text;
     }
 
@@ -27,5 +27,9 @@ public class UILabel extends UITouchModel {
         } else {
             Game.fontYellow.draw(batch, _text, _x, Settings.SCREEN_HEIGHT - _y);
         }
+    }
+
+    public void setText(String text) {
+        _text = text;
     }
 }

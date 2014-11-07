@@ -1,5 +1,11 @@
 package org.smallbox.tales.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.smallbox.tales.Game;
+import org.smallbox.tales.Settings;
+
 /**
  * Created by Alex on 02/11/2014.
  */
@@ -16,8 +22,8 @@ public abstract class CharacterModel {
     protected double _maxMana;
     protected double _mana;
 
-    protected int _posX;
-    protected int _posY;
+    protected float _posX;
+    protected float _posY;
 
     protected double _velocityX;
     protected double _velocityY;
@@ -27,6 +33,7 @@ public abstract class CharacterModel {
 
     public CharacterModel() {
         _maxVelocityX = 10;
+        _maxVelocityY = 10;
 
         _health = 5;
         _maxHealth = 10;
@@ -58,6 +65,24 @@ public abstract class CharacterModel {
     }
 
     public void update() {
+    }
+
+    public void update(MapModel map) {
+        int nextTileX = (int)((_posX + _velocityX) / Settings.TILE_SIZE);
+        int nextTileY = (int)((_posY + _velocityY) / Settings.TILE_SIZE);
+
+//        Gdx.app.log("", "player pos: " + nextTileX + "x" + nextTileY);
+
+        if (nextTileX >= 0 && nextTileY >= 0 && nextTileX < 100 && nextTileY < 100) {
+            if (map.hasObject(2, nextTileX, nextTileY) || map.hasObject(3, nextTileX, nextTileY)) {
+                return;
+            }
+      }
+
+
+        _posX += _velocityX;
+        _posY += _velocityY;
+
         onUpdate();
     }
 
@@ -73,6 +98,18 @@ public abstract class CharacterModel {
     }
 
     public int getPosX() {
-        return _posX;
+        return (int)_posX;
+    }
+
+    public void draw(SpriteBatch batch) {
+        batch.draw(Game.textures.getTexture("player.png").getTexture(), _posX, _posY);
+    }
+
+    public void setVelocityY(float value) {
+        _velocityY = value * _maxVelocityY;
+    }
+
+    public void setVelocityX(float value) {
+        _velocityX = value * _maxVelocityX;
     }
 }
