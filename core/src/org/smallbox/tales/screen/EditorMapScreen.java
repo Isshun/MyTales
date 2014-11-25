@@ -18,12 +18,64 @@ import java.util.List;
  * Created by Alex on 06/11/2014.
  */
 public class EditorMapScreen extends BaseScreen {
+    private static class UICursor extends UIImage {
+        public boolean _isVisible;
+        private int _currentItemZ;
+        private int _currentItemX;
+        private int _currentItemY;
+        private ItemModel _currentItem;
 
+        public UICursor(TextureModel texture, int x, int y) {
+            super(texture, x, y);
+        }
+
+        @Override
+        public void setPosition(int x, int y) {
+            _currentItem = null;
+            _isVisible = true;
+            super.setPosition(x, y);
+        }
+
+        public void clear() {
+            _currentItem = null;
+            _isVisible = false;
+        }
+
+        @Override
+        protected void onDraw(SpriteBatch batch) {
+            if (_isVisible) {
+                super.onDraw(batch);
+            }
+        }
+
+        public void setMapItem(ItemModel item, int z, int x, int y) {
+            _currentItem = item;
+            _currentItemX = x;
+            _currentItemY = y;
+            _currentItemZ = z;
+        }
+
+        public ItemModel getMapItem() {
+            return _currentItem;
+        }
+
+        public int getItemZ() {
+            return _currentItemZ;
+        }
+
+        public int getItemY() {
+            return _currentItemY;
+        }
+
+        public int getItemX() {
+            return _currentItemX;
+        }
+    }
     private final UITouchModel _canvas;
 
     private TextureModel _currentTexture;
     private int _currentTextureIndex;
-    public ItemModel _currentItem;
+    public ItemModel _bufferItem;
     private MapModel _map;
     private List<TextureModel> _textures;
     private int _currentLevel;
@@ -32,7 +84,7 @@ public class EditorMapScreen extends BaseScreen {
     private List<UITouchModel> _touchItems;
     private List<UITouchModel> _touchGrounds;
 
-    private UIImage _cursor;
+    private UICursor _cursor;
 
     private UILabel[]  _levelLabel = new UILabel[6];
     private UIImage _currentTextureThumbnail;
@@ -42,9 +94,6 @@ public class EditorMapScreen extends BaseScreen {
         super();
 
         _map = map;
-
-        _cursor = new UIImage(Game.textures.getTexture("cursor.png"), 32, 32);
-        addUIItem(_cursor);
 
         _currentTextureThumbnail = new UIImage(10, 200);
         addUIItem(_currentTextureThumbnail);
@@ -58,7 +107,7 @@ public class EditorMapScreen extends BaseScreen {
         _levels[3] = true;
         _levels[4] = true;
 
-        _canvas = new UITouchModel(64, 64, 384, 384) {
+        _canvas = new UITouchModel(128, 64, 384, 384) {
             @Override
             protected void onDraw(SpriteBatch batch) {
                 if (_map != null) {
@@ -74,10 +123,32 @@ public class EditorMapScreen extends BaseScreen {
                 }
             }
         };
+
         _canvas.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(int x, int y) {
-                _map.setItem(_currentLevel, x / Settings.TILE_SIZE, y / Settings.TILE_SIZE, _currentItem);
+                int itemX = x / Settings.TILE_SIZE;
+                int itemY = y / Settings.TILE_SIZE;
+                ItemModel item = _map.getItem(_currentLevel, itemX, itemY);
+                if (item != null) {
+                    _cursor.setPosition(
+                            _canvas.getX() + (itemX * Settings.TILE_SIZE),
+                            _canvas.getY() + (_canvas.getHeight() - (itemY * Settings.TILE_SIZE)) - Settings.TILE_SIZE);
+                    _cursor.setMapItem(item, _currentLevel, itemX, itemY);
+                    _bufferItem = null;
+                } else {
+                    _map.setItem(_currentLevel, x / Settings.TILE_SIZE, y / Settings.TILE_SIZE, _bufferItem);
+                }
+            }
+        });
+
+        _canvas.setOnRightClickListener(new OnClickListener() {
+            @Override
+            public void onClick(int x, int y) {
+                _bufferItem = null;
+                _currentTexture = null;
+                _cursor.clear();
             }
         });
 
@@ -123,7 +194,7 @@ public class EditorMapScreen extends BaseScreen {
 
 //                // Items level
 //                else if (_currentLevel == 1 || _currentLevel == 2) {
-//                    _map.setItem(0, x / Settings.TILE_SIZE, y / Settings.TILE_SIZE, _currentItem);
+//                    _map.setItem(0, x / Settings.TILE_SIZE, y / Settings.TILE_SIZE, _bufferItem);
 //                }
             }
 
@@ -157,6 +228,12 @@ public class EditorMapScreen extends BaseScreen {
                     case Input.Keys.ESCAPE:
                         Game.getInstance().loadScreen(new EditorMapChooserScreen());
                         break;
+                    case Input.Keys.FORWARD_DEL:
+                        if (_cursor.getMapItem() != null) {
+                            _map.setItem(_cursor.getItemZ(), _cursor.getItemX(), _cursor.getItemY(), null);
+                            _cursor.clear();
+                        }
+                        break;
                     case Input.Keys.S:
                         MapFactory.toJSON(_map);
                         break;
@@ -180,7 +257,7 @@ public class EditorMapScreen extends BaseScreen {
                         for (int x = 0; x < 100; x++) {
                             for (int y = 0; y < 100; y++) {
                                 if (x == 0 || x == 99 || y == 0 || y == 99) {
-                                    _map.setItem(2, x, y, "4b2b8290-6571-11e4-9803-0800200c9a82");
+                                    _map.setItem(2, x, y, Game.getInstance().getItem("4b2b8290-6571-11e4-9803-0800200c9a82"));
                                 }
                             }
                         }
@@ -197,6 +274,10 @@ public class EditorMapScreen extends BaseScreen {
 
             }
         });
+
+        _cursor = new UICursor(Game.textures.getTexture("cursor.png"), 32, 32);
+        addUIItem(_cursor);
+
     }
 
     private void refreshItems() {
@@ -207,17 +288,17 @@ public class EditorMapScreen extends BaseScreen {
 
         int offset = 0;
         for (final ItemModel item: Game.items) {
-            final UIImage button = new UIImage(item, 0, 60 + (offset * Settings.TILE_SIZE));
+            final UIImage button = new UIImage(item, offset / 15 * Settings.TILE_SIZE, 60 + (offset % 15 * Settings.TILE_SIZE));
             _touchItems.add(button);
             button.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(int x, int y) {
-                    _currentItem = item;
+                    _bufferItem = item;
                     _cursor.setPosition(button.getX(), button.getY());
                 }
             });
             addUIItem(button);
-            if (item == _currentItem) {
+            if (item == _bufferItem) {
                 Game.font.draw(Game.batch, "x", 16, 600 - 100 - (offset * Settings.TILE_SIZE));
             }
             offset++;
@@ -232,7 +313,7 @@ public class EditorMapScreen extends BaseScreen {
 
         int offset = 0;
         for (final TextureModel texture: Game.textures.getAll()) {
-            final UILabel button = new UILabel(texture.getName(), 0, 60 + (offset * 20));
+            final UILabel button = new UILabel(texture.getName(), offset / 15 * 20, 60 + (offset % 15 * 20));
             _touchItems.add(button);
             button.setOnClickListener(new OnClickListener() {
                 @Override

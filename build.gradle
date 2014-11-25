@@ -92,6 +92,7 @@ project(":core") {
 
 
     dependencies {
+        compile "org.yaml:snakeyaml:1.14"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"

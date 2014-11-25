@@ -2,6 +2,7 @@ package org.smallbox.tales.screen;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.screen.ui.OnKeyListener;
@@ -15,6 +16,8 @@ import java.util.List;
  * Created by Alex on 05/11/2014.
  */
 public abstract class BaseScreen implements Screen {
+    protected SpriteCache _cache;
+    protected int _cacheId;
     protected InputProcessor  _inputAdapter;
 
     private List<UITouchModel> _uiItems;
@@ -68,7 +71,7 @@ public abstract class BaseScreen implements Screen {
                 Gdx.app.log("", "touch: " + x + "x" + y);
 
                 for (UITouchModel item: _uiItems) {
-                    if ((item.hasClickListener() || item.hasTouchListener()) && item.isTouched(x, y)) {
+                    if (button == 0 && (item.hasClickListener() || item.hasTouchListener()) && item.isTouched(x, y)) {
                         if (item.hasClickListener()) {
                             item.getClickListener().onClick(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()));
                         }
@@ -76,6 +79,10 @@ public abstract class BaseScreen implements Screen {
                             item.getTouchListener().onTouchUp(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()), pointer, button);
                         }
                         return true;
+                    }
+
+                    if (button == 1 && item.hasRightClickListener() && item.isTouched(x, y)) {
+                        item.getRightClickListener().onClick(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()));
                     }
                 }
 
@@ -140,11 +147,19 @@ public abstract class BaseScreen implements Screen {
     @Override
     public void render(float delta) {
         if (_hasBeenCreated) {
+            if (_cache != null) {
+                _cache.begin();
+                _cache.draw(_cacheId);
+                _cache.end();
+            }
+
+            Game.batch.begin();
             onRefresh();
 
             for (UITouchModel item: _uiItems) {
                 item.draw(Game.batch);
             }
+            Game.batch.end();
         }
     }
 

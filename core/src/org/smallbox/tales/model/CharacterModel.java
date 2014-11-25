@@ -32,14 +32,17 @@ public abstract class CharacterModel {
     protected int _maxVelocityY;
 
     public CharacterModel() {
-        _maxVelocityX = 10;
-        _maxVelocityY = 10;
+        _maxVelocityX = 4;
+        _maxVelocityY = 4;
 
         _health = 5;
         _maxHealth = 10;
 
         _mana = 8;
         _maxMana = 10;
+
+        _posX = 100;
+        _posY = 100;
     }
 
     public String getName() {
@@ -68,20 +71,24 @@ public abstract class CharacterModel {
     }
 
     public void update(MapModel map) {
-        int nextTileX = (int)((_posX + _velocityX) / Settings.TILE_SIZE);
-        int nextTileY = (int)((_posY + _velocityY) / Settings.TILE_SIZE);
 
 //        Gdx.app.log("", "player pos: " + nextTileX + "x" + nextTileY);
 
-        if (nextTileX >= 0 && nextTileY >= 0 && nextTileX < 100 && nextTileY < 100) {
-            if (map.hasObject(2, nextTileX, nextTileY) || map.hasObject(3, nextTileX, nextTileY)) {
-                return;
+        int nextTileY = (int)((_posY + _velocityY) / Settings.TILE_SIZE);
+        int tileX = (int)(_posX / Settings.TILE_SIZE);
+        if (nextTileY >= 0 && nextTileY < 100) {
+            if (!map.hasObject(2, tileX, nextTileY) && !map.hasObject(3, tileX, nextTileY)) {
+                _posY += _velocityY;
             }
-      }
+        }
 
-
-        _posX += _velocityX;
-        _posY += _velocityY;
+        int nextTileX = (int)((_posX + _velocityX) / Settings.TILE_SIZE);
+        int tileY = (int)(_posY / Settings.TILE_SIZE);
+        if (nextTileX >= 0 && nextTileX < 100 ) {
+            if (!map.hasObject(2, nextTileX, tileY) && !map.hasObject(3, nextTileX, tileY)) {
+                _posX += _velocityX;
+            }
+        }
 
         onUpdate();
     }
@@ -101,8 +108,12 @@ public abstract class CharacterModel {
         return (int)_posX;
     }
 
-    public void draw(SpriteBatch batch) {
-        batch.draw(Game.textures.getTexture("player.png").getTexture(), _posX, _posY);
+    public int getPosY() {
+        return (int)_posY;
+    }
+
+    public void draw(SpriteBatch batch, int x, int y) {
+        batch.draw(Game.textures.getTexture("player.png").getTexture(), x, y);
     }
 
     public void setVelocityY(float value) {

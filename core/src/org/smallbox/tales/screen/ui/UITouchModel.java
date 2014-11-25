@@ -12,6 +12,7 @@ public abstract class UITouchModel {
     protected int _height;
     private OnClickListener _onClickListener;
     private OnTouchListener _onTouchListener;
+    private OnClickListener _onRightClickListener;
 
     public UITouchModel(int x, int y, int width, int height) {
         _x = x;
@@ -69,5 +70,17 @@ public abstract class UITouchModel {
 
     public OnTouchListener getTouchListener() {
         return _onTouchListener;
+    }
+
+    public void setOnRightClickListener(OnClickListener onClickListener) {
+        _onRightClickListener = onClickListener;
+    }
+
+    public boolean hasRightClickListener() {
+        return _onRightClickListener != null;
+    }
+
+    public OnClickListener getRightClickListener() {
+        return _onRightClickListener;
     }
 }

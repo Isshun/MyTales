@@ -49,7 +49,7 @@ public class MapModel {
     }
 
     public void setItem(int z, int x, int y, ItemModel item) {
-        Gdx.app.log("", "Set item to " + z + "x" + x + "x" + y);
+        Gdx.app.log("", "Set item " + z + "x" + x + "x" + y + " to " + item);
         _areas[z][x][y] = item;
     }
 
@@ -75,9 +75,5 @@ public class MapModel {
 
     public void setMusic(String music) {
         _music = music;
-    }
-
-    public void setItem(int z, int x, int y, String id) {
-        setItem(z, x, y, Game.getInstance().getItem(id));
     }
 }

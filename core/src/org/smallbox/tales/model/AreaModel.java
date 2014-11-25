@@ -3,6 +3,7 @@ package org.smallbox.tales.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.TextureManager;
@@ -33,6 +34,12 @@ public class AreaModel extends MapObjectModel {
     @Override
     public void onDraw(SpriteBatch batch, int x, int y) {
         throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public void onDraw(SpriteCache cache, int x, int y) {
+        cache.add(_texture.getTexture(), x, y, 0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+        //throw new RuntimeException("Not implemented");
     }
 
     public String getName() {

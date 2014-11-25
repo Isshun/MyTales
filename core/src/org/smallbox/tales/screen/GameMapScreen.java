@@ -6,12 +6,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.math.Vector3;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
-import org.smallbox.tales.model.AreaModel;
 import org.smallbox.tales.model.CharacterModel;
-import org.smallbox.tales.model.GroundModel;
 import org.smallbox.tales.model.MapModel;
 import org.smallbox.tales.screen.ui.OnKeyListener;
 
@@ -31,6 +30,19 @@ public class GameMapScreen extends BaseScreen {
 
     @Override
     protected void onCreate() {
+        _cache = new SpriteCache();
+
+        _cache.beginCache();
+        for (int z = 0; z < 5; z++) {
+            for (int x = 0; x < 100; x++) {
+                for (int y = 0; y < 100; y++) {
+                    if (_map.hasObject(z, x, y)) {
+                        _map.getObject(z, x, y).draw(_cache, x * Settings.TILE_SIZE, y * Settings.TILE_SIZE);
+                    }
+                }
+            }
+        }
+        _cacheId = _cache.endCache();
 
         _player = new CharacterModel() {
             @Override
@@ -117,21 +129,16 @@ public class GameMapScreen extends BaseScreen {
 
     @Override
     protected void onUpdate() {
-        _player.update(_map);
+        if (_player != null) {
+            _player.update(_map);
+            _cache.getProjectionMatrix().setToOrtho2D(- Settings.SCREEN_WIDTH / 2 + _player.getPosX(), - Settings.SCREEN_HEIGHT / 2 + _player.getPosY(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     protected void onRefresh() {
-        for (int z = 0; z < 5; z++) {
-            for (int x = 0; x < 100; x++) {
-                for (int y = 0; y < 100; y++) {
-                    if (_map.hasObject(z, x, y)) {
-                        _map.getObject(z, x, y).draw(Game.batch, x * Settings.TILE_SIZE, y * Settings.TILE_SIZE);
-                    }
-                }
-            }
+        if (_player != null) {
+            _player.draw(Game.batch, Settings.SCREEN_WIDTH / 2, Settings.SCREEN_HEIGHT / 2);
         }
-
-        _player.draw(Game.batch);
     }
 
     public ControllerListener getControllerListener() {

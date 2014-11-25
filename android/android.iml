@@ -82,6 +82,7 @@
     <orderEntry type="library" exported="" name="box2dlights-1.2" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-ai-1.4.0" level="project" />
+    <orderEntry type="library" exported="" name="snakeyaml-1.14" level="project" />
     <orderEntry type="module" module-name="core" exported="" />
   </component>
 </module>

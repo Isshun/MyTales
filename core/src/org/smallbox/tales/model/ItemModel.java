@@ -2,6 +2,7 @@ package org.smallbox.tales.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.TextureManager;
@@ -13,25 +14,21 @@ public class ItemModel extends MapObjectModel {
     private final String _id;
     private final String _name;
     private final String _file;
-    private final int _x;
-    private final int _y;
     private final int _width;
     private final int _height;
     private TextureModel _texture;
 
-    public ItemModel(String id, String name, String file, int x, int y, int width, int height) {
+    public ItemModel(String id, String name, String file, int width, int height) {
         _id = id;
         _name = name;
         _file = file;
-        _x = x;
-        _y = y;
         _width = width;
         _height = height;
     }
 
     public TextureModel getTexture() {
         if (_texture == null) {
-            _texture = Game.textures.getTexture("items", _file);
+            _texture = Game.textures.getTexture("items/tree", _file);
         }
         return _texture;
     }
@@ -47,7 +44,13 @@ public class ItemModel extends MapObjectModel {
     @Override
     public void onDraw(SpriteBatch batch, int x, int y) {
         TextureModel texture = getTexture();
-        batch.draw(texture.getTexture(), x, y, _x * Settings.TILE_SIZE, _y * Settings.TILE_SIZE, _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE);
+        batch.draw(texture.getTexture(), x, y, 0, 0, _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE);
+    }
+
+    @Override
+    public void onDraw(SpriteCache cache, int x, int y) {
+        TextureModel texture = getTexture();
+        cache.add(texture.getTexture(), x, y, 0, 0, _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE);
     }
 
     public void drawIcon(SpriteBatch batch, int x, int y) {
@@ -59,7 +62,7 @@ public class ItemModel extends MapObjectModel {
                 (float)(_width * Settings.TILE_SIZE), (float)(_height * Settings.TILE_SIZE),  // Size
                 scale, scale, // Scale
                 0f, // Rotation
-                _x * Settings.TILE_SIZE, _y * Settings.TILE_SIZE, // Source
+                0, 0, // Source
                 _width * Settings.TILE_SIZE, _height * Settings.TILE_SIZE,  //Source size
                 false, false); // Flip
     }
