@@ -1,20 +1,19 @@
 package org.smallbox.tales.model;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
-import org.smallbox.tales.TextureManager;
+import org.smallbox.tales.engine.model.TextureModel;
 
 /**
  * Created by Alex on 06/11/2014.
  */
 public class AreaModel extends MapObjectModel {
-    private final String _path;
-    private final String _name;
-    protected TextureModel _texture;
+    private String _path;
+    private String _name;
+    protected Texture _texture;
     protected int _index;
 
     public AreaModel(String path, String name, int index) {
@@ -24,11 +23,9 @@ public class AreaModel extends MapObjectModel {
         _name = name;
     }
 
-    public AreaModel(TextureModel texture, int index) {
+    public AreaModel(Texture texture, int index) {
         _texture = texture;
         _index = index;
-        _path = texture.getPath();
-        _name = texture.getName();
     }
 
     @Override
@@ -38,7 +35,7 @@ public class AreaModel extends MapObjectModel {
 
     @Override
     public void onDraw(SpriteCache cache, int x, int y) {
-        cache.add(_texture.getTexture(), x, y, 0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+        cache.add(_texture, x, y, 0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
         //throw new RuntimeException("Not implemented");
     }
 

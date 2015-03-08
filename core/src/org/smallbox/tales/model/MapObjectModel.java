@@ -19,4 +19,6 @@ public abstract class MapObjectModel {
     protected abstract void onDraw(SpriteBatch batch, int x, int y);
 
     protected abstract void onDraw(SpriteCache cache, int x, int y);
+
+    public abstract String getName();
 }

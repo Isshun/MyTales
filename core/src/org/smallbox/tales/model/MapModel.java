@@ -2,6 +2,7 @@ package org.smallbox.tales.model;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.tales.Game;
+import org.smallbox.tales.screen.TilesetAreaModel;
 
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class MapModel {
         _areas = new MapObjectModel[5][100][100];
     }
 
-    public void setArea(int z, int x, int y, AreaModel area) {
+    public void setArea(int z, int x, int y, MapObjectModel area) {
         Gdx.app.log("", "Set area: " + x + "x" + y + " with: " + area.getName());
         _areas[z][x][y] = area;
     }

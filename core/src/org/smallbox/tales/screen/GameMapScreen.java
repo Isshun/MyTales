@@ -12,7 +12,7 @@ import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
 import org.smallbox.tales.model.CharacterModel;
 import org.smallbox.tales.model.MapModel;
-import org.smallbox.tales.screen.ui.OnKeyListener;
+import org.smallbox.tales.engine.ui.OnKeyListener;
 
 /**
  * Created by Alex on 05/11/2014.

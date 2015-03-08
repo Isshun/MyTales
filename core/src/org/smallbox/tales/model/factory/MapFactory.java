@@ -1,11 +1,9 @@
 package org.smallbox.tales.model.factory;
 
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
-import org.smallbox.tales.model.AreaModel;
-import org.smallbox.tales.model.GroundModel;
-import org.smallbox.tales.model.ItemModel;
-import org.smallbox.tales.model.MapModel;
+import org.smallbox.tales.model.*;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -55,8 +53,12 @@ public class MapFactory {
 
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element eElement = (Element) nNode;
-                        AreaModel area = new GroundModel(eElement.getAttribute("path"), eElement.getAttribute("name"), Integer.parseInt(eElement.getAttribute("index")));
-                        map.setArea(Integer.parseInt(eElement.getAttribute("z")), Integer.parseInt(eElement.getAttribute("x")), Integer.parseInt(eElement.getAttribute("y")), area);
+                        try {
+                            AreaModel area = new GroundModel(eElement.getAttribute("path"), eElement.getAttribute("name"), Integer.parseInt(eElement.getAttribute("index")));
+                            map.setArea(Integer.parseInt(eElement.getAttribute("z")), Integer.parseInt(eElement.getAttribute("x")), Integer.parseInt(eElement.getAttribute("y")), area);
+                        } catch (GdxRuntimeException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

@@ -5,12 +5,13 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.tales.Game;
 import org.smallbox.tales.Settings;
-import org.smallbox.tales.screen.ui.OnKeyListener;
-import org.smallbox.tales.screen.ui.OnTouchListener;
-import org.smallbox.tales.screen.ui.UITouchModel;
+import org.smallbox.tales.engine.ui.OnKeyListener;
+import org.smallbox.tales.engine.ui.OnTouchListener;
+import org.smallbox.tales.engine.ui.UITouchModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Alex on 05/11/2014.
@@ -56,6 +57,7 @@ public abstract class BaseScreen implements Screen {
                 for (UITouchModel item: _uiItems) {
                     if (item.hasTouchListener() && item.isTouched(x, y)) {
                         item.getTouchListener().onTouchDown(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()), pointer, button);
+                        //item.getTouchListener().onTouchDown(x - item.getX(), y - item.getY(), pointer, button);
                         return true;
                     }
                 }
@@ -70,13 +72,18 @@ public abstract class BaseScreen implements Screen {
             public boolean touchUp (int x, int y, int pointer, int button) {
                 Gdx.app.log("", "touch: " + x + "x" + y);
 
-                for (UITouchModel item: _uiItems) {
+                ListIterator li = _uiItems.listIterator(_uiItems.size());
+                while (li.hasPrevious()) {
+                    UITouchModel item = (UITouchModel)li.previous();
+
                     if (button == 0 && (item.hasClickListener() || item.hasTouchListener()) && item.isTouched(x, y)) {
                         if (item.hasClickListener()) {
                             item.getClickListener().onClick(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()));
+                            //item.getClickListener().onClick(x - item.getX(), y - item.getY());
                         }
                         if (item.hasTouchListener()) {
                             item.getTouchListener().onTouchUp(x - item.getX(), (Settings.SCREEN_HEIGHT - y) - (Settings.SCREEN_HEIGHT - item.getHeight() - item.getY()), pointer, button);
+                            //item.getTouchListener().onTouchUp(x - item.getX(), y - item.getY(), pointer, button);
                         }
                         return true;
                     }
@@ -154,6 +161,10 @@ public abstract class BaseScreen implements Screen {
             }
 
             Game.batch.begin();
+//            Game.batch.disableBlending();
+//            backgroundSprite.draw(batch);
+//            batch.enableBlending();
+
             onRefresh();
 
             for (UITouchModel item: _uiItems) {

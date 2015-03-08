@@ -113,7 +113,7 @@ public abstract class CharacterModel {
     }
 
     public void draw(SpriteBatch batch, int x, int y) {
-        batch.draw(Game.textures.getTexture("player.png").getTexture(), x, y);
+        batch.draw(Game.textures.getTexture("player.png"), x, y);
     }
 
     public void setVelocityY(float value) {
